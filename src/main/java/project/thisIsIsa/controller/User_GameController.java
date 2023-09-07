@@ -31,9 +31,9 @@ public class User_GameController {
 
     @GetMapping (path = "/getByUserId")
     public @ResponseBody Set<User_Game> getByUserId(@RequestParam Integer user_id) {
-        Set<User_Game> games;
+        Set<User_Game> games = new HashSet<>();
         try {
-            games = user_GameRepository.findByUserId(user_id);
+            //games = user_GameRepository.findByUserId(user_id);
         } catch (Exception e) {
             games = new HashSet<User_Game>();
         }
@@ -42,9 +42,9 @@ public class User_GameController {
     
     @GetMapping(path = "/getByGameId")
     public @ResponseBody Set<User_Game> getByGameId(@RequestParam Integer game_id) {
-        Set<User_Game> users;
+        Set<User_Game> users = new HashSet<>();
         try{
-            users = user_GameRepository.findByGameId(game_id);
+            //users = user_GameRepository.findByGameId(game_id);
         } catch (Exception e) {
             users = new HashSet<User_Game>();
         }
