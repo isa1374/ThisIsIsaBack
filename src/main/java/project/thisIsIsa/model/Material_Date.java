@@ -19,7 +19,7 @@ import jakarta.persistence.ManyToOne;
 public class Material_Date {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "created_by", nullable = false)
@@ -32,11 +32,11 @@ public class Material_Date {
     private Date modified;
 
     @ManyToOne
-    @JoinColumn(name = "material_id")
+    @JoinColumn(name = "material_id", nullable = false)
     Material material_id;
 
     @ManyToOne 
-    @JoinColumn(name = "date_id")
+    @JoinColumn(name = "date_id", nullable = false)
     Dates date_id;
     
     public Material_Date() {

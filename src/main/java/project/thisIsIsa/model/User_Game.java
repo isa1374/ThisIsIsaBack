@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 public class User_Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     @ManyToOne

@@ -19,7 +19,7 @@ import jakarta.persistence.ManyToOne;
 public class Game_Artifact {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "completed", nullable = false)
@@ -38,11 +38,11 @@ public class Game_Artifact {
     private Date modified;
      
     @ManyToOne
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     Game game_id;
 
     @ManyToOne
-    @JoinColumn(name = "artifact_id")
+    @JoinColumn(name = "artifact_id", nullable = false)
     Artifact artifact_id;
 
     public Game_Artifact() {

@@ -18,7 +18,7 @@ import jakarta.persistence.OneToMany;
 @DynamicUpdate
 public class Dates {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "month", nullable = false)

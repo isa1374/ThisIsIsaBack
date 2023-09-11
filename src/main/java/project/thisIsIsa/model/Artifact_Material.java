@@ -2,24 +2,17 @@ package project.thisIsIsa.model;
 
 import java.util.Date;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
- 
 @Entity
 @DynamicInsert
 @DynamicUpdate
 public class Artifact_Material {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "needed_quantity", nullable = false)
@@ -44,12 +37,16 @@ public class Artifact_Material {
     private Date modified;
     
     @ManyToOne
-    @JoinColumn(name = "artifact_id")
+    @JoinColumn(name = "artifact_id", nullable = false)
     Artifact artifact_id;
 
     @ManyToOne
-    @JoinColumn(name = "material_id")
+    @JoinColumn(name = "material_id", nullable = false)
     Material material_id;
+
+    @OneToOne
+    @JoinColumn(name = "game_id", nullable = false)
+    Game game_id;
     
     public Artifact_Material() {
 

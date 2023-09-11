@@ -18,7 +18,7 @@ import jakarta.persistence.OneToMany;
 @DynamicUpdate
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
@@ -30,8 +30,6 @@ public class Users {
     private Boolean active;
     @Column(name = "admin", nullable = false)
     private Boolean admin;
-    @Column(name = "created_by", nullable = false)
-    private Integer created_by;
     @Column(name = "modified_by", nullable = false)
     private Integer modified_by;
     @Column(name = "photo", nullable = true)
@@ -56,7 +54,6 @@ public class Users {
         this.email = email;
         this.active = active;
         this.admin = admin;
-        this.created_by = created_by;
         this.modified_by = modified_by;
         this.photo = photo;
         this.modified = modified;
@@ -89,20 +86,12 @@ public class Users {
         return admin;
     }
 
-    public Integer getCreatedBy() {
-        return created_by;
-    }
-
     public Integer getModifiedBy() {
         return modified_by;
     }
 
     public String getPhoto() {
         return photo;
-    }
-
-    public Date getCreated() {
-        return created;
     }
 
     public Date getModified() {
@@ -129,10 +118,6 @@ public class Users {
 
     public void setAdmin(Boolean admin) {
         this.admin = admin;
-    }
-
-    public void setCreatedBy(Integer created_by) {
-        this.created_by = created_by;
     }
 
     public void setModifiedBy(Integer modified_by) {

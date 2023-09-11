@@ -18,7 +18,7 @@ import jakarta.persistence.OneToMany;
 @DynamicUpdate
 public class Artifact {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
         @Column(name = "name", nullable = false)
         private String name;
