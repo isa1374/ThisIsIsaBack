@@ -58,7 +58,6 @@ public class UserController {
             user.setEmail(email);
             user.setActive(true);
             user.setAdmin(admin);
-            user.setCreatedBy(created_by);
             user.setModifiedBy(modified_by);
             user.setPhoto(photo);
             user.setCreated(currentDate);
