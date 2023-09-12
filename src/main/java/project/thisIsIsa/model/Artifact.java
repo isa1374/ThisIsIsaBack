@@ -39,8 +39,6 @@ public class Artifact {
         @OneToMany(mappedBy = "artifact_id")
         Set<Artifact_Material> artifactmaterials; 
 
-        @OneToMany(mappedBy = "artifact_id")
-        Set<Artifact_Date> artifactdates;
         
         public Artifact() {
 

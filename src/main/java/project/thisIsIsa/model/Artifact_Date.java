@@ -32,7 +32,7 @@ public class Artifact_Date {
 
     @ManyToOne
     @JoinColumn(name = "artifact_id", nullable = false)
-    Artifact artifact_id;
+    Artifact_Material artifact_id;
 
     @ManyToOne 
     @JoinColumn(name = "date_id", nullable = false)
@@ -42,7 +42,7 @@ public class Artifact_Date {
 
     }
     
-    public Artifact_Date(Integer id, Integer created_by, Integer modified_by, Date created, Date modified, Artifact artifact_id,
+    public Artifact_Date(Integer id, Integer created_by, Integer modified_by, Date created, Date modified, Artifact_Material artifact_id,
             Dates date_id) {
         this.id = id;
         this.created_by = created_by;
@@ -75,7 +75,7 @@ public class Artifact_Date {
         return modified;
     }
 
-    public Artifact getArtifact() {
+    public Artifact_Material getArtifact() {
         return artifact_id;
     }
 
@@ -101,7 +101,7 @@ public class Artifact_Date {
         this.modified = modified;
     }
 
-    public void setArtifact(Artifact artifact_id) {
+    public void setArtifact(Artifact_Material artifact_id) {
         this.artifact_id = artifact_id;
     }
 

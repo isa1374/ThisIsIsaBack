@@ -1,6 +1,7 @@
 package project.thisIsIsa.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -47,6 +48,12 @@ public class Artifact_Material {
     @OneToOne
     @JoinColumn(name = "game_id", nullable = false)
     Game game_id;
+
+    @OneToMany(mappedBy = "id")
+    Set<Material_Date> materialdates;
+
+    @OneToMany(mappedBy = "artifact_id")
+    Set<Artifact_Date> artifactdates;
     
     public Artifact_Material() {
 

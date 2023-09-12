@@ -41,10 +41,7 @@ public class Material {
     private Date modified;
 
     @OneToMany(mappedBy = "material_id")
-    Set<Artifact_Material> artifactmaterials; 
-
-    @OneToMany(mappedBy = "material_id")
-    Set<Material_Date> materialdates; 
+    Set<Artifact_Material> artifactmaterials;
 
     public Material() {
 
