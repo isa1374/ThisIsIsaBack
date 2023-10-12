@@ -9,7 +9,7 @@ import project.thisIsIsa.model.Artifact;
 import java.util.Set;
 
 public interface ArtifactRepository extends CrudRepository<Artifact,Integer> {
-    @Query(value = ("SELECT * FROM artifact WHERE name LIKE" +'%'+":name"+'%'), nativeQuery = true)
+    @Query(value = ("SELECT * FROM artifact WHERE name LIKE %"+":name"+"%"), nativeQuery = true)
     Set<Artifact> findArtifactByName(@Param("name") String name);
 
 }

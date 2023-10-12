@@ -54,8 +54,7 @@ public class Artifact {
             this.created = created;
             this.modified = modified;
         }
-        
-        
+
         //Get values of properties
 
         public Integer getId() {
@@ -111,4 +110,15 @@ public class Artifact {
         public void setModified(Date modified) {
             this.modified = modified;
         }
-    }
+
+        public String toString(){
+            String artifact =  "ID: " + getId()+'\n'+
+                    "Name: " + getName()+'\n'+
+                    "Description: " + getDescription()+'\n'+
+                    "Created: " + getCreated()+'\n'+
+                    "Modified: " +getModified()+'\n'+
+                    "Created By: " + getCreatedBy()+'\n'+
+                    "Modified By: " + getModifiedBy()+'\n';
+            return artifact;
+        }
+}
