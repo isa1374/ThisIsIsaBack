@@ -113,5 +113,15 @@ public class Material {
     public void setModified(Date modified) {
         this.modified = modified;
     }
-    
+
+    public String toString(){
+        String material = "ID: " + getId()+'\n'+
+                "Name: " + getName()+'\n'+
+                "Description: " + getDescription()+'\n'+
+                "Created: " + getCreated()+'\n'+
+                "Modified: " + getModified()+ '\n'+
+                "Created By: " + getCreatedBy() +'\n'+
+                "Modified By: " + getModifiedBy();
+        return material;
+    }
 }

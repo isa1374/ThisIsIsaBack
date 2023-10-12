@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface MaterialRepository extends CrudRepository<Material,Integer> {
 
-    @Query(value = ("SELECT * FROM material WHERE name LIKE" +'%'+":name"+'%'), nativeQuery = true)
+    @Query(value = ("SELECT * FROM material WHERE name LIKE %"+":name"+"%"), nativeQuery = true)
     Set<Material> findMaterialByName(@Param("name") String name);
 
 }
