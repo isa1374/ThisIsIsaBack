@@ -65,11 +65,11 @@ public class Dates {
         return month;
     }
 
-    public Integer created_by() {
+    public Integer getCreated_by() {
         return created_by;
     }
 
-    public Integer modified_by() {
+    public Integer getModified_by() {
         return modified_by;
     }
 
@@ -101,6 +101,16 @@ public class Dates {
 
     public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    public String toString(){
+        String dates = "ID: " + getId() + '\n'+
+                "Month: " + getMonth() +'\n'+
+                "Created: " + getCreated() + '\n'+
+                "Modified: " +  getModified() + '\n'+
+                "Created By: " + getCreated_by() + '\n'+
+                "Modified By: " + getModified_by();
+        return dates;
     }
 
 }

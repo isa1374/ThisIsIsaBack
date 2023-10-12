@@ -1,7 +1,9 @@
 package project.thisIsIsa.controller;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,65 +30,81 @@ public class DatesController {
     }
 
     @GetMapping(path = "/getById")
-    public @ResponseBody Dates getDateById(@RequestParam int id) {
-        Optional<Dates> dateCapsule = DatesRepository.findById(id);
-        Dates date;
-        if (dateCapsule.isPresent()) {
-            date = dateCapsule.get();
-        } else {
-            date = null;
+    public @ResponseBody Dates getDateById(@RequestParam(value = "id") Integer id) {
+        Optional<Dates> dateCapsule;
+        Dates date = new Dates();
+        if(id != null) {
+            dateCapsule = DatesRepository.findById(id);
+
+            if (dateCapsule.isPresent()) {
+                date = dateCapsule.get();
+            } else {
+                date = null;
+            }
         }
         return date;
     }
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addDate(@RequestParam String month, @RequestParam int created_by,
-            @RequestParam int modified_by) {
+    public @ResponseBody String addDate(@RequestParam(value = "month") String month,
+                                        @RequestParam(value = "created_by") Integer created_by,
+                                        @RequestParam(value = "modified_by") Integer modified_by) {
         String message = "";
         Date currentDate = new Date();
         Dates date = new Dates();
-        date.setMonth(month);
-        date.setCreatedBy(created_by);
-        date.setModifiedBy(modified_by);
-        date.setCreated(currentDate);
-        date.setModified(currentDate);
+        if((month != null || month.equals(" ")) && created_by != null && modified_by != null) {
+            date.setMonth(month);
+            date.setCreatedBy(created_by);
+            date.setModifiedBy(modified_by);
+            date.setCreated(currentDate);
+            date.setModified(currentDate);
 
-        try {
-            DatesRepository.save(date);
-            message = "Date saved successfully";
-        } catch (Exception e) {
-            message = "Couldn't save date";
+            try {
+                DatesRepository.save(date);
+                message = "Date saved successfully.\n" + date.toString();
+            } catch (Exception e) {
+                message = "Couldn't save date";
+            }
         }
 
         return message;
     }
 
     @PutMapping(path = "/update")
-    public @ResponseBody String updateDate(@RequestParam int id, @RequestParam String month,
-    @RequestParam
-    int created_by,
-            @RequestParam int modified_by) {
+    public @ResponseBody String updateDate(@RequestParam(value = "id") Integer id,
+                                           @RequestParam(value = "month") String month,
+                                           @RequestParam(value = "modified_by") Integer modified_by) {
         String message = "";
         Date currentDate = new Date();
-        Optional<Dates> dateCapsule = DatesRepository.findById(id);
-        Dates date;
-        if (dateCapsule.isPresent()) {
-            date = dateCapsule.get();
-            if (!month.equalsIgnoreCase(""))
-                date.setMonth(month);
-            if (created_by != 0)
-                date.setCreatedBy(created_by);
-            if (modified_by != 0)
-                date.setModifiedBy(modified_by);
-            date.setModified(currentDate);
-            try {
-                DatesRepository.save(date);
-                message = "Date: " + date.getMonth() + " saved";
-            } catch (Exception e) {
-                message = "Date couldn't be saved";
+        Optional<Dates> dateCapsule;
+        Dates date = new Dates();
+        if(id != null) {
+            dateCapsule = DatesRepository.findById(id);
+            if (dateCapsule.isPresent()) {
+                date = dateCapsule.get();
+                if (month != null){
+                    if(month.equals("") || date.getMonth().equalsIgnoreCase(month)){
+                        date.setMonth(date.getMonth());
+                    }else{
+                        date.setMonth(month);
+                    }
+                }else{
+                    date.setMonth(date.getMonth());
+                }
+
+                if (modified_by != null) date.setModifiedBy(modified_by);
+                date.setModified(currentDate);
+                try {
+                    DatesRepository.save(date);
+                    message = "Date saved.\n" + date.toString();
+                } catch (Exception e) {
+                    message = "Date couldn't be saved.";
+                }
+            } else {
+                message = "Date couldn't be found.";
             }
-        } else {
-            message = "Date couldn't be found";
+        }else{
+            message = "ID needed to find date.";
         }
         return message;
     }
@@ -96,10 +114,19 @@ public class DatesController {
         String message = "";
         try{
             DatesRepository.deleteById(id);
-            message = "Date deleted";
+            message = "Date deleted.";
         } catch (Exception e) {
-            message = "Couldn't delete date";
+            message = "Couldn't delete date.";
         }
         return message;
+    }
+
+    @GetMapping(path = "/getDateByMonth")
+    public @ResponseBody Iterable<Dates> getDateByMonth(@RequestParam(value = "month") String month){
+        Set<Dates> dates = new HashSet<>();
+        if(month != null || !month.equals(" ")){
+            dates = DatesRepository.findDatesByMonth(month);
+        }
+        return dates;
     }
 }
