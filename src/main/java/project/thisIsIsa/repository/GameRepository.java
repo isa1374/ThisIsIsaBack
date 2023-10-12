@@ -9,6 +9,6 @@ import java.util.Set;
 
 public interface GameRepository extends CrudRepository<Game,Integer>{
 
-    @Query(value = ("SELECT * FROM game WHERE name LIKE" + '%' + ":name"+ '%'), nativeQuery = true)
+    @Query(value = ("SELECT * FROM game WHERE name LIKE %" + ":name"+ "%"), nativeQuery = true)
     Set<Game> findGameByName(@Param("name") String name);
 }

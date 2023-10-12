@@ -104,4 +104,14 @@ public class Game {
         this.modified_by = modified_by;
     }
 
+    public String toString(){
+        String game = "ID: " + getId().toString() + '\n'+
+                      "Name: " + getName() + '\n'+
+                      "Description: " + getDescription() + '\n'+
+                      "Created: " + getCreated() + '\n'+
+                      "Modified: " + getModified() + '\n'+
+                      "Created By: " + getCreatedBy() + '\n' +
+                      "Modified By: " +  getModifiedBy();
+        return game;
+    }
 }
