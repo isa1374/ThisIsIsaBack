@@ -98,6 +98,10 @@ public class Users {
         return modified;
     }
 
+    public Date getCreated(){
+        return created;
+    }
+
     // Set values to properties
 
     public void setName(String name) {
@@ -134,6 +138,20 @@ public class Users {
 
     public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    public String toString(){
+        String userString = "Id: " + getId().toString() + '\n' +
+                "Name: " + getName() + '\n'+
+                "Password: " + getPassword() + '\n' +
+                "Email: " + getEmail() + '\n' +
+                "Admin: " + getAdmin() + '\n' +
+                "Active: " + getActive() + '\n' +
+                "Modified: " + getModified() + '\n' +
+                "Created: " + getCreated() + '\n' +
+                "Photo: " + getPhoto() ;
+
+        return userString;
     }
 
 }

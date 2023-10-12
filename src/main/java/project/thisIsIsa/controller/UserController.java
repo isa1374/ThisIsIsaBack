@@ -1,26 +1,21 @@
 package project.thisIsIsa.controller;
 
-import java.util.Date;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import project.thisIsIsa.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
 import project.thisIsIsa.model.Users;
+import project.thisIsIsa.repository.UserRepository;
 
-@Controller
-@RequestMapping(path = "/user")
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+@RestController
+@RequestMapping(path = "/users")
 public class UserController {
     @Autowired
     private UserRepository UserRepository;
+    UserController () {}
 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Users> getAllUsers() {
@@ -28,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/getById")
-    public @ResponseBody Users getUserById(@RequestParam Integer id) {
+    public @ResponseBody Users getUserById(@RequestParam(value = "id") Integer id) {
         Users user;
         if (id != null) {
             Optional<Users> userCapsule = UserRepository.findById(id);
@@ -44,74 +39,91 @@ public class UserController {
     }
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addUser(@RequestParam String name, @RequestParam String password,
-            @RequestParam String email, @RequestParam Boolean admin, @RequestParam Integer created_by,
-            @RequestParam Integer modified_by, @RequestParam String photo) {
+    public @ResponseBody String addUser(@RequestParam(value = "name") String name, @RequestParam (value = "password") String password,
+                                        @RequestParam(value = "email") String email, @RequestParam(value = "admin") Boolean admin, @RequestParam (value = "createdBy") Integer created_by,
+                                        @RequestParam (value = "modifiedBy") Integer modified_by, @RequestParam (value = "photo", required = false) String photo) {
         String message = "";
         Date currentDate = new Date();
         Users user = new Users();
-        if ((name != null && !name.equals("")) && (password != null && !password.equals(""))
-                && (email != null && !email.equals("")) && (admin != null) && (created_by != null)
-                && (modified_by != null)) {
+        if ((name != null || !name.equals("")) &&
+                (password != null || !password.equals("")) &&
+                (email != null || !email.equals("")) &&
+                (admin != null) && (created_by != null) &&
+                (modified_by !=null)) {
+
             user.setName(name);
             user.setPassword(password);
             user.setEmail(email);
             user.setActive(true);
             user.setAdmin(admin);
             user.setModifiedBy(modified_by);
-            user.setPhoto(photo);
             user.setCreated(currentDate);
             user.setModified(currentDate);
 
+            if(photo != null || !photo.equalsIgnoreCase(" ")) {
+                user.setPhoto(photo);
+            }
+
             try {
                 UserRepository.save(user);
-                message = "User saved";
+                message = "User saved\n" + user.toString();
             } catch (Exception e) {
-                message = "User couldn't be created";
+                message = "User couldn't be created.";
             }
         } else {
-            message = "Couldn't create user. Missing values of properties";
+            message = "Couldn't create user. Missing values of properties.";
         }
 
         return message;
     }
     
     @PutMapping(path = "/update")
-    public @ResponseBody String updateUser(@RequestParam Integer id, @RequestParam String name, @RequestParam String password,
-            @RequestParam String email, @RequestParam Boolean active, @RequestParam Boolean admin,
-            @RequestParam Integer modified_by, @RequestParam String photo, @RequestParam Date modified) {
+    public @ResponseBody String updateUser(@RequestParam(value = "id") Integer id, @RequestParam (value = "name", required = false) String name, @RequestParam (value = "password", required = false) String password,
+            @RequestParam (value = "email", required = false) String email, @RequestParam (value = "active", required = false) Boolean active, @RequestParam (value = "admin", required = false) Boolean admin,
+            @RequestParam (value = "modifiedBy") Integer modified_by, @RequestParam (value = "photo", required = false) String photo) {
         String message = "";
         Optional<Users> userCapsule = UserRepository.findById(id);
         Users user;
+        Date currentDate = new Date();
         if (userCapsule.isPresent()) {
             user = userCapsule.get();
-            if ((!name.equals("") || name != null) && (!user.getName().equalsIgnoreCase(name))) {
+            if ((name != null || !name.equals("")) && (!user.getName().equalsIgnoreCase(name))) {
                 user.setName(name);
             }
-            if ((!password.equals("") || password != null) && (!user.getPassword().equals(password))) {
+            if ((!password.equals("")) && (!user.getPassword().equals(password))) {
                 user.setPassword(password);
+            }else{
+                user.setPassword(user.getPassword());
             }
-            if ((!email.equals("") || email != null) && (!user.getEmail().equals(email))) {
+            if ((!email.equals("")) && (!user.getEmail().equals(email))) {
                 user.setEmail(email);
+            }else{
+                user.setEmail(user.getEmail());
             }
             if (active != null && user.getActive() != active) {
                 user.setActive(active);
+            }else{
+                user.setActive(user.getActive());
             }
             if (admin != null && user.getAdmin() != admin) {
                 user.setAdmin(admin);
+            }else{
+                user.setAdmin(user.getAdmin());
             }
             if (modified_by != null && user.getModifiedBy() != modified_by) {
                 user.setModifiedBy(modified_by);
+            }else{
+                user.setModifiedBy(user.getModifiedBy());
             }
-            if ((!photo.equalsIgnoreCase("") || photo != null) && !user.getPhoto().equals(photo)) {
+            if ((!photo.equalsIgnoreCase("")) && ((user.getPhoto() != null) && !user.getPhoto().equals(photo))) {
                 user.setPhoto(photo);
+            }else{
+                user.setPhoto(user.getPhoto());
             }
-            if (modified != null && (modified.compareTo(user.getModified()) != 0)) {
-                user.setModified(modified);
-            }
+            user.setModified(currentDate);
             try {
                 UserRepository.save(user);
-                message = "User updated";
+                message = "User updated\n" + user.toString();
             } catch (Exception e) {
                 message = "User couldn't be updated";
             }
@@ -123,7 +135,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/delete")
-    public @ResponseBody String deleteUser(@RequestParam Integer id) {
+    public @ResponseBody String deleteUser(@RequestParam(value = "id") Integer id) {
         String message = "";
         if (id != null) {
             try{
@@ -136,6 +148,38 @@ public class UserController {
             message = "ID needed to delete user";
         }
         return message;
+    }
+
+    @GetMapping(path = "/getUserByName")
+    public @ResponseBody Iterable<Users> getUserByName(@RequestParam String name){
+        Set<Users> users = new HashSet<>();
+        if(name != null) users = UserRepository.findUsersByName(name);
+        return users;
+    }
+
+    @GetMapping(path = "/getAdmins")
+    public @ResponseBody Iterable<Users> getAdmins (){
+        Set<Users> users = UserRepository.getListOfAdmins();
+        return users;
+    }
+
+    @GetMapping(path = "/getActiveUsers")
+    public @ResponseBody Iterable<Users> getActiveUsers (){
+        Set<Users> users = UserRepository.getListOfActiveUsers();
+        return  users;
+    }
+
+    @GetMapping(path = "/getInactiveUsers")
+    public @ResponseBody Iterable<Users> getInactiveUsers (){
+        Set<Users> users = UserRepository.getListOfInactiveUsers();
+        return users;
+    }
+
+    @GetMapping(path = "/getUsersByEmail")
+    public @ResponseBody Iterable<Users> getUsersByEmail(@RequestParam String email){
+        Set<Users> users = new HashSet<>();
+        if(email != null) users = UserRepository.findUsersByEmail(email);
+        return users;
     }
 }
 

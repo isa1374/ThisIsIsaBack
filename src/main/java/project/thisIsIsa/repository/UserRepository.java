@@ -9,10 +9,10 @@ import java.util.Set;
 
 public interface UserRepository extends CrudRepository<Users,Integer> {
 
-    @Query(value = ("SELECT * FROM users WHERE name LIKE" +'%'+":name"+'%'), nativeQuery = true)
+    @Query(value = ("SELECT * FROM users WHERE name LIKE %"+":name"+"%"), nativeQuery = true)
     Set<Users> findUsersByName(@Param("name") String name);
 
-    @Query(value = ("SELECT * FROM users WHERE email LIKE" +'%'+":email"+'%'), nativeQuery = true)
+    @Query(value = ("SELECT * FROM users WHERE email LIKE %"+":email"+"%"), nativeQuery = true)
     Set<Users> findUsersByEmail(@Param("email") String email);
 
     @Query(value = "SELECT * FROM users WHERE admin = 1", nativeQuery = true)
